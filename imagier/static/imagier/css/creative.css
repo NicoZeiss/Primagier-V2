@@ -580,7 +580,7 @@ pre code {
 
 @media (min-width: 1200px) {
   .container {
-    max-width: 1140px;
+    max-width: 1500px;
   }
 }
 
@@ -9658,7 +9658,7 @@ hr.light {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 72px);
-  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../img/bg-masthead.jpg");
+  background: linear-gradient(to bottom, rgba(30, 10, 0, 0.6) 0%, rgba(30, 10, 0, 0.7) 100%), url("../img/backgrounds/pencils_bg.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;

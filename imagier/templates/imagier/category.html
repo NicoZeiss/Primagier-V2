@@ -1,0 +1,26 @@
+{% extends 'imagier/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<header class="masthead">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-10 align-self-end">
+        <h1 class="text-uppercase text-white font-weight-bold">Sélectionnez une catégorie</h1>
+        <hr class="divider my-4">
+      </div>
+      <div class="row justify-content-center">
+        {% for key, value in cat_dic.items %}
+          <div class="col-sm-2 text-center cat-item-box">
+            <div class="cat-item">
+                <button class="submit-btn btn btn-primary btn-xl cap-text" onclick="window.location.href = '{% url 'index' %}';">{{ value }}</button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</header>
+
+{% endblock %}
