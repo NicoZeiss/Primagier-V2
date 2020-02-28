@@ -10,15 +10,17 @@
         <h1 class="text-uppercase text-white font-weight-bold">Sélectionnez une catégorie</h1>
         <hr class="divider my-4">
       </div>
-      <div class="row justify-content-center">
-        {% for key, value in cat_dic.items %}
-          <div class="col-sm-2 text-center cat-item-box">
-            <form method="get" class="cat-item" action="{% url 'imagier:subcategory' %}">
-              <input type="text" name="category_id" class="hidden-field" value="{{ key }}">
-              <button type="submit" class="submit-btn btn btn-primary btn-xl cap-text">{{ value }}</button>
-            </form>
-          </div>
-        {% endfor %}
+      <div class="col-lg-12 align-self-baseline">
+        <div class="row justify-content-center align-self-baseline">
+          {% for key, value in cat_dic.items %}
+            <div class="col-sm-2 text-center cat-item-box">
+              <form method="get" class="cat-item" action="{% url 'imagier:subcategory' %}">
+                <input type="text" name="category_id" class="hidden-field" value="{{ key }}">
+                <button type="submit" class="submit-btn btn btn-primary btn-xl cap-text">{{ value }}</button>
+              </form>
+            </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>

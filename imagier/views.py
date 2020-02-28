@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponseRedirect
-from .models import Category
+from .models import Category, Item
 
 
 def index(request):
@@ -19,7 +19,6 @@ def category(request):
 
 def subcategory(request):
 	query = request.GET.get('category_id')
-	print(query)
 	cat_id = get_object_or_404(Category, id=query)
 	subcat_list = Category.objects.filter(parentcat_id=cat_id).order_by('label')
 	subcat_dic = {}
@@ -30,3 +29,16 @@ def subcategory(request):
 		'subcat_dic': subcat_dic
 	}
 	return render(request, 'imagier/subcategory.html', context)
+
+def items(request):
+	query = request.GET.get('subcat_id')
+	subcat = get_object_or_404(Category, id=query)
+	item_list = subcat.item.all()
+	item_dic = {}
+	for item in item_list:
+		item_dic[item.name] = item.picture
+
+	context = {
+		'item_dic': item_dic
+	}
+	return render(request, 'imagier/items.html', context)

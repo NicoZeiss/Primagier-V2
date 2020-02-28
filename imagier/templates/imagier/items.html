@@ -1,0 +1,35 @@
+{% extends 'imagier/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<header class="masthead">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-10 align-self-end">
+        <h1 class="text-uppercase text-white font-weight-bold">Sélectionnez les éléments à ajouter à votre imagier</h1>
+        <hr class="divider my-4">
+      </div>
+      <div class="col-lg-10 align-self-baseline">
+        {% if item_dic|length_is:"0" %}
+        <p class="text-white-75 font-weight-light mb-5">Pas encore d'éléments dans cette catégorie</p>
+        {% else %}
+        <div class="row justify-content-center align-self-baseline">
+          {% for name, pict in item_dic.items %}
+            <div class="col-sm-3 text-center cat-item-box">
+              <div class="cat-item bg-white">
+              <div style="background-image: url('{{ pict }}');background-size: contain;background-repeat:no-repeat;background-position: 50% 50%;height: 790%;border-radius:30px;"></div>
+                <form method="get" action="{% url 'index' %}">
+                  <button type="submit" class="item-btn btn btn-primary btn-xl cap-text">{{ name }}</button>
+                </form>
+            </div>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>
+
+{% endblock %}

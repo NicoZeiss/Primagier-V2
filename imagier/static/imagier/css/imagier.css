@@ -29,9 +29,25 @@
   box-shadow: 5px 5px 10px black;
 }
 
+.bg-white {
+	background-color:  #ffffff;
+}
+
 .submit-btn {
 	height: 100%;
 	border-radius: 30px;
+}
+
+.item-btn {
+  width: 100%;
+  font-weight: 700;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding: 0.3rem 2rem;
+  font-size: 0.9rem;
+  vertical-align: middle;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hidden-field {
