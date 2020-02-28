@@ -11,8 +11,8 @@
         <hr class="divider my-4">
       </div>
       <div class="row justify-content-center">
-        {% for key, value in cat_dic.items %}
-          <div class="col-sm-2 text-center cat-item-box">
+        {% for key, value in subcat_dic.items %}
+          <div class="col-sm-3 text-center cat-item-box">
             <form method="get" class="cat-item" action="{% url 'imagier:subcategory' %}">
               <input type="text" name="category_id" class="hidden-field" value="{{ key }}">
               <button type="submit" class="submit-btn btn btn-primary btn-xl cap-text">{{ value }}</button>

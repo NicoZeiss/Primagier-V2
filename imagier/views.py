@@ -15,6 +15,18 @@ def category(request):
 	context = {
 		'cat_dic': cat_dic
 	}
-	print(context)
-
 	return render(request, 'imagier/category.html', context)
+
+def subcategory(request):
+	query = request.GET.get('category_id')
+	print(query)
+	cat_id = get_object_or_404(Category, id=query)
+	subcat_list = Category.objects.filter(parentcat_id=cat_id).order_by('label')
+	subcat_dic = {}
+	for item in subcat_list:
+		subcat_dic[item.id] = item.label
+
+	context = {
+		'subcat_dic': subcat_dic
+	}
+	return render(request, 'imagier/subcategory.html', context)

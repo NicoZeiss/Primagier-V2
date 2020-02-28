@@ -6,4 +6,5 @@ app_name = 'imagier'
 
 urlpatterns = [
     url(r'^category/$', views.category, name="category"),
+    url(r'^subcategory/$', views.subcategory, name="subcategory"),
 ]
