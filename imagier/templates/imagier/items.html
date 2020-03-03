@@ -15,12 +15,14 @@
         <p class="text-white-75 font-weight-light mb-5">Pas encore d'éléments dans cette catégorie</p>
         {% else %}
         <div class="row justify-content-center align-self-baseline">
-          {% for name, pict in item_dic.items %}
+          {% for item, pict in item_dic.items %}
             <div class="col-sm-3 text-center cat-item-box">
               <div class="cat-item bg-white">
-              <div style="background-image: url('{{ pict }}');background-size: contain;background-repeat:no-repeat;background-position: 50% 50%;height: 790%;border-radius:30px;"></div>
-                <form method="get" action="{% url 'index' %}">
-                  <button type="submit" class="item-btn btn btn-primary btn-xl cap-text">{{ name }}</button>
+              <div style="background-image: url('{{ item.picture }}');background-size: contain;background-repeat:no-repeat;background-position: 50% 50%;height: 790%;border-radius:30px;"></div>
+                <form method="get" action="{% url 'imagier:add_item' %}">
+                  <input type="text" name="subcat_id" class="hidden-field" value="{{ subcat.id }}">
+                  <input type="text" name="item_id" class="hidden-field" value="{{ item.id }}">
+                  <button type="submit" class="item-btn btn btn-primary btn-xl cap-text">{{ item.name }}</button>
                 </form>
             </div>
             </div>

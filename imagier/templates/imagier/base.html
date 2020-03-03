@@ -39,6 +39,19 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto my-2 my-lg-0">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger cap-text">{{ request.user }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="{% url 'users:logout' %}">
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+          </li>
+          {% else %}
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#about">About</a>
           </li>
@@ -46,17 +59,43 @@
             <a class="nav-link js-scroll-trigger" href="#services">Services</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a>
+            <a class="nav-link js-scroll-trigger" href="{% url 'users:login' %}">
+              <i class="fas fa-sign-in-alt"></i>
+            </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
-          </li>
+          {% endif %}
         </ul>
       </div>
     </div>
   </nav>
 
   {% block content %}{% endblock %}
+
+  {% if request.user.is_authenticated %}
+  <section id="imagier">
+    <div class="row h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-10 align-self-end">
+        <hr class="divider my-4">
+        <h1 class="text-uppercase font-weight-bold">Votre imagier en cours de création</h1>
+        <hr class="divider my-4">
+      </div>
+    </div>
+    <div class="container-fluid p-0">
+      <div class="row no-gutters">
+      {% for item in current_items %}
+      <div class="col-lg-3 col-sm-6">
+        <div class="imagier-box">
+          <img class="item-pict" src="{{ item.picture }}" alt="">
+          <div class="imagier-box-caption">
+            <div class="item-name">{{ item.name }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
 
    <!-- Footer -->
   <footer class="bg-light py-5">
