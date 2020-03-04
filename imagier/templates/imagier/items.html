@@ -15,15 +15,23 @@
         <p class="text-white-75 font-weight-light mb-5">Pas encore d'éléments dans cette catégorie</p>
         {% else %}
         <div class="row justify-content-center align-self-baseline">
-          {% for item, pict in item_dic.items %}
+          {% for item, value in item_dic.items %}
             <div class="col-sm-3 text-center cat-item-box">
               <div class="cat-item bg-white">
               <div style="background-image: url('{{ item.picture }}');background-size: contain;background-repeat:no-repeat;background-position: 50% 50%;height: 790%;border-radius:30px;"></div>
-                <form method="get" action="{% url 'imagier:add_item' %}">
-                  <input type="text" name="subcat_id" class="hidden-field" value="{{ subcat.id }}">
-                  <input type="text" name="item_id" class="hidden-field" value="{{ item.id }}">
-                  <button type="submit" class="item-btn btn btn-primary btn-xl cap-text">{{ item.name }}</button>
-                </form>
+              {% if value == True %}
+              <form method="get" action="{% url 'imagier:del_item' %}">
+                <input type="text" name="subcat_id" class="hidden-field" value="{{ subcat.id }}">
+                <input type="text" name="item_id" class="hidden-field" value="{{ item.id }}">
+                <button type="submit" class="item-btn btn btn-green btn-xl cap-text">{{ item.name }} (ajouté)</button>
+              </form>
+              {% else %}
+              <form method="get" action="{% url 'imagier:add_item' %}">
+                <input type="text" name="subcat_id" class="hidden-field" value="{{ subcat.id }}">
+                <input type="text" name="item_id" class="hidden-field" value="{{ item.id }}">
+                <button type="submit" class="item-btn btn btn-primary btn-xl cap-text">{{ item.name }}</button>
+              </form>
+              {% endif %}
             </div>
             </div>
           {% endfor %}

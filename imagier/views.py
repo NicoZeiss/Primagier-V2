@@ -44,7 +44,12 @@ def items(request):
 		item_list = subcat.item.all()
 		item_dic = {}
 		for item in item_list:
-			item_dic[item] = item.picture
+			if len(item.user.filter(username=request.user.username)) != 0:
+				item_dic[item] = True
+			else:
+				item_dic[item] = False
+
+		print(item_dic)
 
 		context = {
 			'item_dic': item_dic,
@@ -62,5 +67,24 @@ def add_to_imagier(request):
 		request.user.item.add(_item)
 
 		return HttpResponseRedirect('/imagier/items/?subcat_id={}'.format(subcat_id))
+	else:
+		return HttpResponseRedirect(reverse('users:login'))
+
+def del_from_imagier(request):
+	if request.user.is_authenticated:
+		print(request.GET)
+		if 'subcat_id' in request.GET:
+			subcat_id = request.GET.get('subcat_id')
+			item_id = request.GET.get('item_id')
+			_item = Item.objects.get(id=item_id)
+			request.user.item.remove(_item)
+			return HttpResponseRedirect('/imagier/items/?subcat_id={}'.format(subcat_id))
+
+		else:
+			print("bin")
+			item_id = request.GET.get('item_id')
+			_item = Item.objects.get(id=item_id)
+			pint(_item)
+			request.user.item.remove(_item)
 	else:
 		return HttpResponseRedirect(reverse('users:login'))

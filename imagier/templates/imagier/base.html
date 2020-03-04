@@ -56,9 +56,6 @@
             <a class="nav-link js-scroll-trigger" href="#about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#services">Services</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'users:login' %}">
               <i class="fas fa-sign-in-alt"></i>
             </a>
@@ -73,11 +70,13 @@
 
   {% if request.user.is_authenticated %}
   <section id="imagier">
-    <div class="row h-100 align-items-center justify-content-center text-center">
-      <div class="col-lg-10 align-self-end">
-        <hr class="divider my-4">
-        <h1 class="text-uppercase font-weight-bold">Votre imagier en cours de création</h1>
-        <hr class="divider my-4">
+    <div class="container h-100">
+      <div class="row h-100 align-items-center justify-content-center text-center">
+        <div class="col-lg-10 align-self-end">
+          <hr class="divider my-4">
+          <h1 class="text-uppercase font-weight-bold">Votre imagier en cours de création</h1>
+          <hr class="divider my-4">
+        </div>
       </div>
     </div>
     <div class="container-fluid p-0">
@@ -88,6 +87,14 @@
           <img class="item-pict" src="{{ item.picture }}" alt="">
           <div class="imagier-box-caption">
             <div class="item-name">{{ item.name }}</div>
+            <div class="del-pict">
+              <form method="get" action="{% url 'imagier:del_item' %}">
+                <input type="text" name="item_id" class="hidden-field" value="{{ item.id }}">
+                <a type="submit" class="del-pict-color" href="{% url 'index' %}">
+                  <i class="fas fa-trash-alt"></i>
+                </a>
+              </form>
+            </div>
           </div>
         </div>
       </div>

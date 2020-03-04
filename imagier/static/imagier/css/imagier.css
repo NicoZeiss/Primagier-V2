@@ -119,6 +119,41 @@
   opacity: 1;
 }
 
+#imagier .del-pict {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding-top: 6px;
+	padding-right: 10px
+}
+
+a.del-pict-color {
+  color: #fff;
+  opacity: 0.8;
+  font-size: 1.2em;
+  background-color: transparent;
+}
+
+a.del-pict-color:hover {
+  color: #fff;
+  opacity: 1;
+  font-size: 1.4em;
+  transition: font-size 0.25s ease;
+  text-decoration: underline;
+}
+
+.btn-green {
+  color: #fff;
+  background-color: #0C8F04;
+  border-color: #0C8F04;
+}
+
+.btn-green:hover {
+  color: #fff;
+  background-color: #066B00;
+  border-color: #066B00;
+}
+
 @media (min-width: 992px) {
   .scr-size-100 {
     height: 100vh;
