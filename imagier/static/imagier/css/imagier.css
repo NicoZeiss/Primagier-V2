@@ -127,19 +127,19 @@
 	padding-right: 10px
 }
 
-a.del-pict-color {
-  color: #fff;
-  opacity: 0.8;
-  font-size: 1.2em;
-  background-color: transparent;
+.img-del-btn {
+	background-color: transparent;
+	border: none;
+	color: #fff;
+	opacity: 0.8;
+	font-size: 1.2em;
 }
 
-a.del-pict-color:hover {
-  color: #fff;
-  opacity: 1;
-  font-size: 1.4em;
-  transition: font-size 0.25s ease;
-  text-decoration: underline;
+.img-del-btn:hover {
+	color: #fff;
+	opacity: 1;
+	font-size: 1.4em;
+	transition: font-size 0.25s ease;
 }
 
 .btn-green {

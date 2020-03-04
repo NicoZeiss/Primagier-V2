@@ -90,9 +90,9 @@
             <div class="del-pict">
               <form method="get" action="{% url 'imagier:del_item' %}">
                 <input type="text" name="item_id" class="hidden-field" value="{{ item.id }}">
-                <a type="submit" class="del-pict-color" href="{% url 'index' %}">
+                <button type="submit" class="img-del-btn">
                   <i class="fas fa-trash-alt"></i>
-                </a>
+                </button>
               </form>
             </div>
           </div>
