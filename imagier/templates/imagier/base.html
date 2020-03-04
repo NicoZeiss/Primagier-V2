@@ -44,7 +44,10 @@
             <a class="nav-link js-scroll-trigger cap-text">{{ request.user }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            <a class="nav-link js-scroll-trigger" href="#mainpart"><i class="fas fa-search"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#imagier"><i class="fas fa-images"></i></a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'users:logout' %}">
@@ -52,9 +55,6 @@
             </a>
           </li>
           {% else %}
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about">About</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'users:login' %}">
               <i class="fas fa-sign-in-alt"></i>

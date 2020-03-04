@@ -11,6 +11,19 @@ class Command(BaseCommand):
         for key in items:
             for item in items[key]:
                 cat = Category.objects.get(label=key)
-                new_item = Item(name=item['name'], picture=item['pict'])
-                new_item.save()
-                new_item.category.add(cat)
+                label_filter = Item.objects.filter(label=item['name'])
+                dupl_list = []
+                if label_filter:
+                	for element in label_filter:
+                		dupl_list.append(element)
+                	i = len(dupl_list)
+                	item_name = '{}({})'.format(item['name'], i)
+                	new_item = Item(name=item_name, label=item['name'], picture=item['pict'])
+	                new_item.save()
+	                new_item.category.add(cat)
+
+                else:
+                	item_name = item['name']
+	                new_item = Item(name=item_name, label=item['name'], picture=item['pict'])
+	                new_item.save()
+	                new_item.category.add(cat)

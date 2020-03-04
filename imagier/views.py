@@ -23,17 +23,25 @@ def category(request):
 
 def subcategory(request):
 	if request.user.is_authenticated:
-		query = request.GET.get('category_id')
-		cat_id = get_object_or_404(Category, id=query)
-		subcat_list = Category.objects.filter(parentcat_id=cat_id).order_by('label')
-		subcat_dic = {}
-		for item in subcat_list:
-			subcat_dic[item.id] = item.label
+		if 'category_id' in request.GET:
+			query = request.GET.get('category_id')
+			cat_id = get_object_or_404(Category, id=query)
+			category = Category.objects.get(id=query)
+			subcat_list = Category.objects.filter(parentcat_id=cat_id).order_by('label')
+			subcat_dic = {}
+			for item in subcat_list:
+				subcat_dic[item.id] = item.label
 
-		context = {
-			'subcat_dic': subcat_dic
-		}
-		return render(request, 'imagier/subcategory.html', context)
+			context = {
+				'subcat_dic': subcat_dic,
+				'category_name': category.label
+			}
+			return render(request, 'imagier/subcategory.html', context)
+		else:
+			subcat_id = request.GET.get('subcat_id')
+			subcat = Category.objects.get(id=subcat_id)
+			parcat_id = subcat.parentcat_id
+			return HttpResponseRedirect('/imagier/subcategory/?category_id={}'.format(parcat_id))
 	else:
 		return HttpResponseRedirect(reverse('users:login'))
 

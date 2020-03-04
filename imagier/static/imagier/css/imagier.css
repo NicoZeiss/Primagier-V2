@@ -69,6 +69,10 @@
 	text-transform: capitalize;
 }
 
+.upper-text {
+	text-transform: uppercase;
+}
+
 #imagier .container-fluid {
   max-width: 1920px;
 }
