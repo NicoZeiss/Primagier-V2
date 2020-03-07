@@ -1,0 +1,24 @@
+Collecting xhtml2pdf
+  Downloading xhtml2pdf-0.2.4.tar.gz (98 kB)
+Collecting html5lib>=1.0
+  Downloading html5lib-1.0.1-py2.py3-none-any.whl (117 kB)
+Collecting pyPdf2
+  Downloading PyPDF2-1.26.0.tar.gz (77 kB)
+Requirement already satisfied: Pillow in ./env/lib/python3.6/site-packages (from xhtml2pdf) (7.0.0)
+Requirement already satisfied: reportlab>=3.0 in ./env/lib/python3.6/site-packages (from xhtml2pdf) (3.5.34)
+Collecting six
+  Using cached six-1.14.0-py2.py3-none-any.whl (10 kB)
+Collecting webencodings
+  Downloading webencodings-0.5.1-py2.py3-none-any.whl (11 kB)
+Building wheels for collected packages: xhtml2pdf, pyPdf2
+  Building wheel for xhtml2pdf (setup.py): started
+  Building wheel for xhtml2pdf (setup.py): finished with status 'done'
+  Created wheel for xhtml2pdf: filename=xhtml2pdf-0.2.4-py3-none-any.whl size=231231 sha256=9455daa01535d7336edf8ee395b9fc4d7c7874d76000a23a208d4b89618cfd85
+  Stored in directory: /home/nicolas/.cache/pip/wheels/0d/a7/b5/ea0f83ae9fe87cd015ef7e7a057c1f82a7f8183f8ed18c53d3
+  Building wheel for pyPdf2 (setup.py): started
+  Building wheel for pyPdf2 (setup.py): finished with status 'done'
+  Created wheel for pyPdf2: filename=PyPDF2-1.26.0-py3-none-any.whl size=61084 sha256=1f2a56a49bc0a1b2abd75d7a7e4d0a830304c3b0b292200236fde48aa9c2519b
+  Stored in directory: /home/nicolas/.cache/pip/wheels/97/28/4b/142b7d8c98eeeb73534b9c5b6558ddd3bab3c2c8192aa7ab30
+Successfully built xhtml2pdf pyPdf2
+Installing collected packages: six, webencodings, html5lib, pyPdf2, xhtml2pdf
+Successfully installed html5lib-1.0.1 pyPdf2-1.26.0 six-1.14.0 webencodings-0.5.1 xhtml2pdf-0.2.4

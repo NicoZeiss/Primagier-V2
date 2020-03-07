@@ -1,7 +1,11 @@
 from django.shortcuts import render, get_object_or_404, reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from .models import Category, Item
 from django.contrib.auth.models import User
+
+from django.views.generic import View
+from django.template.loader import get_template
+from .utils import render_to_pdf
 
 
 def index(request):
@@ -93,3 +97,30 @@ def del_from_imagier(request):
 			return HttpResponseRedirect(request.META['HTTP_REFERER'])
 	else:
 		return HttpResponseRedirect(reverse('users:login'))
+
+class GeneratePDF(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            items = request.user.item.all()
+            template = get_template('imagier/invoice.html')
+            context = {
+                "invoice_id": 123,
+                "customer_name": "John Cooper",
+                "amount": 1399.99,
+                "items": items,
+            }
+            html = template.render(context)
+            pdf = render_to_pdf('imagier/invoice.html', context)
+            if pdf:
+                response = HttpResponse(pdf, content_type='application/pdf')
+                filename = "Invoice_%s.pdf" %("12341231")
+                content = "inline; filename='%s'" %(filename)
+                download = request.GET.get("download")
+                if download:
+                    content = "attachment; filename='%s'" %(filename)
+                response['Content-Disposition'] = content
+                return response
+            return HttpResponse("Not found")
+        else:
+            return HttpResponseRedirect(reverse('users:login'))
+

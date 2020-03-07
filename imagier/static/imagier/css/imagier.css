@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'BelleAllureGS';
+  src: url('/static/imagier/fonts/BelleAllureGS-Gros.otf');
+}
+
+.test-font {
+  font-family: 'BelleAllureGS';
+  color: black;
+}
+
 .brown-bg {
 	background-color: #E6E2AF;
 }
