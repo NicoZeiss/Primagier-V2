@@ -23,7 +23,7 @@ class Item(models.Model):
         return self.name
 
 class Favourites(models.Model):
-    name = models.CharField(max_length=30, unique=True, null=False)
+    name = models.CharField(max_length=30, unique=False, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ManyToManyField(Item, related_name='item')
 

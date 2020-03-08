@@ -6,7 +6,7 @@ from math import *
 from django.views.generic import View
 from django.template.loader import get_template
 from .utils import render_to_pdf
-from .forms import ImagierForm
+from .forms import ExportImagierForm
 
 
 def index(request):
@@ -102,13 +102,13 @@ def del_from_imagier(request):
 def export_pdf(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            form = ImagierForm(request.POST)
+            form = ExportImagierForm(request.POST)
             if form.is_valid():
                 imagier_title = form.cleaned_data['imagier_title']
                 file_name = form.cleaned_data['file_name']
                 return HttpResponseRedirect('{}?file_name={}'.format(reverse('imagier:render_pdf'), file_name))
         else:
-            form = ImagierForm()
+            form = ExportImagierForm()
 
         return render(request, 'imagier/export_pdf.html', {'form': form})
     else:
