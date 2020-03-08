@@ -1,13 +1,9 @@
 from django import forms
-from .models import Category
+from .models import Category, Item
+from django.contrib.auth.models import User
 
 
-cat_list = []
-for item in Category.objects.all():
-    if item.is_parent == True:
-        cat_list.append(item.label)
-
-class SearchForm(forms.Form):
-    # search_widget = forms.TextInput(attrs={'placeholder': 'Aliment...', 'class': 'input-xl'})
-    # user_input = forms.CharField(label='', max_length=50, widget=search_widget)
-    categorie = forms.CharField()
+class ImagierForm(forms.Form):
+	required_css_class = 'img-form-list-row'
+	imagier_title = forms.CharField(label='', max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Titre de l\'imagier', 'class': 'form-font'}))
+	file_name = forms.CharField(label='', max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Nom du PDF', 'class': 'form-font'}))

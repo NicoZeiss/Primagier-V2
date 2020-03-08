@@ -33,12 +33,17 @@ def user_login(request):
     else:
         return HttpResponseRedirect(reverse('index'))
 
-
 def user_logout(request):
     if request.user.is_authenticated:
         temp_img = request.user.item.all()
         request.user.item.clear()
         logout(request)
         return HttpResponseRedirect(reverse('index'))
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+def save_imagier(request):
+    if request.user.is_authenticated:
+        pass
     else:
         return HttpResponseRedirect(reverse('index'))

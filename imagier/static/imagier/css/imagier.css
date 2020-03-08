@@ -168,6 +168,26 @@
   border-color: #066B00;
 }
 
+.img-form-list {
+  list-style:none;
+  margin-left:0;
+  padding-left:0;
+}
+
+.img-form-list-row {
+  margin-bottom: 0.4em;
+}
+
+.form-font {
+  width: 20em;
+  font-weight: 700;
+  border: none;
+  font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
 @media (min-width: 992px) {
   .scr-size-100 {
     height: 100vh;

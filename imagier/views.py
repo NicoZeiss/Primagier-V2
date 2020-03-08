@@ -6,6 +6,7 @@ from math import *
 from django.views.generic import View
 from django.template.loader import get_template
 from .utils import render_to_pdf
+from .forms import ImagierForm
 
 
 def index(request):
@@ -98,36 +99,41 @@ def del_from_imagier(request):
 	else:
 		return HttpResponseRedirect(reverse('users:login'))
 
-def create_imagier(request):
+def export_pdf(request):
     if request.user.is_authenticated:
-        pass
+        if request.method == 'POST':
+            form = ImagierForm(request.POST)
+            if form.is_valid():
+                imagier_title = form.cleaned_data['imagier_title']
+                file_name = form.cleaned_data['file_name']
+                return HttpResponseRedirect('{}?file_name={}'.format(reverse('imagier:render_pdf'), file_name))
+        else:
+            form = ImagierForm()
+
+        return render(request, 'imagier/export_pdf.html', {'form': form})
     else:
         return HttpResponseRedirect(reverse('users:login'))
 
 class GeneratePDF(View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         if request.user.is_authenticated:
+            row_file_name = request.GET.get('file_name')
+            file_name = self.format_file_name(row_file_name)
             items_per_page = 2
             template_name = "imagier/invoice{}.html".format(items_per_page)
             template = get_template(template_name)
             items = request.user.item.all()
-            all_dics = {}
-            for i in range(items_per_page):
-                all_dics['dic{}'.format(i)] = []
-            i = 0
-            for item in items:
-                all_dics['dic{}'.format(i)].append(item)
-                i += 1
-                if i == items_per_page:
-                    i = 0
+            all_dics = self.create_dics(items_per_page, items)
+
             context = {
                 "dics": all_dics,
             }
+
             html = template.render(context)
             pdf = render_to_pdf(template_name, context)
             if pdf:
                 response = HttpResponse(pdf, content_type='application/pdf')
-                filename = "Invoice_%s.pdf" %("12341231")
+                filename = "%s.pdf" %(file_name)
                 content = "inline; filename=%s" %(filename)
                 download = request.GET.get("download")
                 if download:
@@ -138,3 +144,18 @@ class GeneratePDF(View):
         else:
             return HttpResponseRedirect(reverse('users:login'))
 
+    def create_dics(self, items_nb, items):
+        all_dics = {}
+        for i in range(items_nb):
+            all_dics['dic{}'.format(i)] = []
+        i = 0
+        for item in items:
+            all_dics['dic{}'.format(i)].append(item)
+            i += 1
+            if i == items_nb:
+                i = 0
+        return all_dics
+
+    def format_file_name(self, name):
+        file_name = name.replace(' ', '_').lower()
+        return file_name
