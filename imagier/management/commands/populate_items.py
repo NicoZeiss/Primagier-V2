@@ -18,12 +18,12 @@ class Command(BaseCommand):
                 		dupl_list.append(element)
                 	i = len(dupl_list)
                 	item_name = '{}({})'.format(item['name'], i)
-                	new_item = Item(name=item_name, label=item['name'], picture=item['pict'])
+                	new_item = Item(name=item_name, label=item['name'], upper_label=item['name'].upper(), picture=item['pict'])
 	                new_item.save()
 	                new_item.category.add(cat)
 
                 else:
                 	item_name = item['name']
-	                new_item = Item(name=item_name, label=item['name'], picture=item['pict'])
+	                new_item = Item(name=item_name, label=item['name'], upper_label=item['name'].upper(), picture=item['pict'])
 	                new_item.save()
 	                new_item.category.add(cat)

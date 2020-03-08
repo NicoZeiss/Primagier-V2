@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import Category, Item
 from django.contrib.auth.models import User
-
+from math import *
 from django.views.generic import View
 from django.template.loader import get_template
 from .utils import render_to_pdf
@@ -101,13 +101,20 @@ def del_from_imagier(request):
 class GeneratePDF(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            items = request.user.item.all()
             template = get_template('imagier/invoice.html')
+            items_per_page = 2
+            items = request.user.item.all()
+            all_dics = {}
+            for i in range(items_per_page):
+                all_dics['dic{}'.format(i)] = []
+            i = 0
+            for item in items:
+                all_dics['dic{}'.format(i)].append(item)
+                i += 1
+                if i == items_per_page:
+                    i = 0
             context = {
-                "invoice_id": 123,
-                "customer_name": "John Cooper",
-                "amount": 1399.99,
-                "items": items,
+                "dics": all_dics,
             }
             html = template.render(context)
             pdf = render_to_pdf('imagier/invoice.html', context)
