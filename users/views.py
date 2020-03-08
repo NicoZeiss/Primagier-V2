@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from imagier.models import Item
 from .forms import LoginForm
 
 
@@ -34,5 +35,10 @@ def user_login(request):
 
 
 def user_logout(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('index'))
+    if request.user.is_authenticated:
+        temp_img = request.user.item.all()
+        request.user.item.clear()
+        logout(request)
+        return HttpResponseRedirect(reverse('index'))
+    else:
+        return HttpResponseRedirect(reverse('index'))

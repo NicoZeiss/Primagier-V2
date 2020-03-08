@@ -98,11 +98,18 @@ def del_from_imagier(request):
 	else:
 		return HttpResponseRedirect(reverse('users:login'))
 
+def create_imagier(request):
+    if request.user.is_authenticated:
+        pass
+    else:
+        return HttpResponseRedirect(reverse('users:login'))
+
 class GeneratePDF(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            template = get_template('imagier/invoice.html')
             items_per_page = 2
+            template_name = "imagier/invoice{}.html".format(items_per_page)
+            template = get_template(template_name)
             items = request.user.item.all()
             all_dics = {}
             for i in range(items_per_page):
@@ -117,11 +124,11 @@ class GeneratePDF(View):
                 "dics": all_dics,
             }
             html = template.render(context)
-            pdf = render_to_pdf('imagier/invoice.html', context)
+            pdf = render_to_pdf(template_name, context)
             if pdf:
                 response = HttpResponse(pdf, content_type='application/pdf')
                 filename = "Invoice_%s.pdf" %("12341231")
-                content = "inline; filename='%s'" %(filename)
+                content = "inline; filename=%s" %(filename)
                 download = request.GET.get("download")
                 if download:
                     content = "attachment; filename='%s'" %(filename)
