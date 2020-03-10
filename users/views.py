@@ -55,10 +55,37 @@ def save_imagier(request):
                     for item in items:
                         fav_imagier.item.add(item)
                     request.user.item.clear()
-                return HttpResponseRedirect(reverse('index'))
+
+                return HttpResponseRedirect('{}?favourite_id={}'.format(reverse('users:details'), fav_imagier.id))
         else:
             form = SaveImagierForm()
 
         return render(request, 'imagier/save_imagier.html', {'form': form})
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+def favourites(request):
+    if request.user.is_authenticated:
+        fav_list = Favourites.objects.filter(user_id=request.user.id).order_by('name')
+        favourites = []
+        for item in fav_list:
+            favourites.append(item)
+        context = {
+            'favourites': favourites,
+        }
+        return render(request, 'imagier/favourites.html', context)
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+def details(request):
+    if request.user.is_authenticated:
+        favourite_id = request.GET.get('favourite_id')
+        favourite = Favourites.objects.get(id=favourite_id)
+        items = favourite.item.all()
+        context = {
+            'items': items,
+            'fav_name': favourite.name,
+        }
+        return render(request, 'imagier/details.html', context)
     else:
         return HttpResponseRedirect(reverse('index'))

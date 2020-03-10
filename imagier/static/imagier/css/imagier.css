@@ -35,8 +35,11 @@
   height: 100%;
   width: 100%;
   background-color:  #f4623a;
-  border-radius: 30px;
   box-shadow: 5px 5px 10px black;
+}
+
+.rad-box .cat-item {
+    border-radius: 30px;
 }
 
 .bg-white {
@@ -51,13 +54,17 @@
 .item-btn {
   width: 100%;
   font-weight: 700;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+  border-radius: 0px;
   padding: 0.3rem 2rem;
   font-size: 0.9rem;
   vertical-align: middle;
   margin-left: auto;
   margin-right: auto;
+}
+
+.dsbl-btn:hover {
+  background-color:  #f4623a;
+  border: none;
 }
 
 .hidden-field {
@@ -83,11 +90,11 @@
 	text-transform: uppercase;
 }
 
-#imagier .container-fluid {
+.container-fluid {
   max-width: 1920px;
 }
 
-#imagier .imagier-box {
+.imagier-box {
 	background-color: #fff;
 	width: 100%;
 	height: 20em;
@@ -96,7 +103,7 @@
     flex-wrap: wrap;
 }
 
-#imagier .item-pict {
+.item-pict {
 	max-width: 100%;
 	max-height: 100%;
 	width: auto;
@@ -105,7 +112,7 @@
     margin-left: auto;
 }
 
-#imagier .imagier-box .imagier-box-caption {
+.imagier-box .imagier-box-caption {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,18 +129,18 @@
   text-align: center;
 }
 
-#imagier .container-fluid .imagier-box .imagier-box-caption .item-name {
+.container-fluid .imagier-box .imagier-box-caption .item-name {
   font-size: 1.2rem;
   font-weight: 600;
   text-transform: uppercase;
   font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-#imagier .container-fluid .imagier-box:hover .imagier-box-caption {
+.container-fluid .imagier-box:hover .imagier-box-caption {
   opacity: 1;
 }
 
-#imagier .del-pict {
+.del-pict {
 	position: absolute;
 	top: 0;
 	right: 0;

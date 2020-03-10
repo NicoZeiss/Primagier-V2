@@ -25,7 +25,7 @@ class Item(models.Model):
 class Favourites(models.Model):
     name = models.CharField(max_length=30, unique=False, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    item = models.ManyToManyField(Item, related_name='item')
+    item = models.ManyToManyField(Item, related_name='favourites')
 
     def __str__(self):
         return self.name
