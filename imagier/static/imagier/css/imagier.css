@@ -148,6 +148,11 @@
 	padding-right: 10px
 }
 
+.fav .del-pict {
+  padding-top: 20px;
+  padding-right: 20px;
+}
+
 .img-del-btn {
 	background-color: transparent;
 	border: none;

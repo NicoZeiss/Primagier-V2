@@ -11,13 +11,21 @@
         <hr class="divider my-4">
       </div>
       <div class="col-lg-12 align-self-baseline">
-        <div class="row justify-content-center align-self-baseline">
+        <div class="row justify-content-center align-self-baseline fav">
           {% for item in favourites %}
             <div class="col-sm-2 text-center cat-item-box rad-box">
               <form method="get" class="cat-item" action="{% url 'users:details' %}">
                 <input type="text" name="favourite_id" class="hidden-field" value="{{ item.id }}">
                 <button type="submit" class="submit-btn btn btn-primary btn-xl upper-text">{{ item.name }}</button>
               </form>
+              <div class="del-pict">
+              <form method="get" action="{% url 'users:del_fav' %}">
+                <input type="text" name="favourite" class="hidden-field" value="{{ item.id }}">
+                <button type="submit" class="img-del-btn">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </form>
+            </div>
             </div>
           {% endfor %}
         </div>

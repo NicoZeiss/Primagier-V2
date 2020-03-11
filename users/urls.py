@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^save_imagier/$', views.save_imagier, name='save_imagier'),
     url(r'^favourites/$', views.favourites, name='favourites'),
     url(r'^details/$', views.details, name='details'),
+    url(r'^del_fav/$', views.del_favourite, name='del_fav'),
 ]

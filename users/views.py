@@ -84,8 +84,18 @@ def details(request):
         items = favourite.item.all()
         context = {
             'items': items,
-            'fav_name': favourite.name,
+            'favourite': favourite,
         }
         return render(request, 'imagier/details.html', context)
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+def del_favourite(request):
+    if request.user.is_authenticated:
+        fav_id = request.GET.get('favourite')
+        favourite = Favourites.objects.get(id=fav_id)
+        favourite.delete()
+
+        return HttpResponseRedirect(reverse('users:favourites'))
     else:
         return HttpResponseRedirect(reverse('index'))

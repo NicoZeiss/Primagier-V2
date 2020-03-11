@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponseRedirect, HttpResponse
-from .models import Category, Item
+from .models import Category, Item, Favourites
 from django.contrib.auth.models import User
 from math import *
 from django.views.generic import View
@@ -94,7 +94,6 @@ def del_from_imagier(request):
 		else:
 			item_id = request.GET.get('item_id')
 			_item = Item.objects.get(id=item_id)
-			print(_item)
 			request.user.item.remove(_item)
 			return HttpResponseRedirect(request.META['HTTP_REFERER'])
 	else:
@@ -102,12 +101,13 @@ def del_from_imagier(request):
 
 def export_pdf(request):
     if request.user.is_authenticated:
+        imagier = request.GET.get('imagier')
         if request.method == 'POST':
             form = ExportImagierForm(request.POST)
             if form.is_valid():
                 imagier_title = form.cleaned_data['imagier_title']
                 file_name = form.cleaned_data['file_name']
-                return HttpResponseRedirect('{}?file_name={}'.format(reverse('imagier:render_pdf'), file_name))
+                return HttpResponseRedirect('{}?file_name={}&imagier={}'.format(reverse('imagier:render_pdf'), file_name, imagier))
         else:
             form = ExportImagierForm()
 
@@ -188,12 +188,17 @@ class SaveImage(View):
 class GeneratePDF(View):
     def get(self, request):
         if request.user.is_authenticated:
+            imagier = request.GET.get('imagier')
             row_file_name = request.GET.get('file_name')
             file_name = self.format_file_name(row_file_name)
             items_per_page = 2
             template_name = "imagier/invoice{}.html".format(items_per_page)
             template = get_template(template_name)
-            items = request.user.item.all()
+            if imagier == 'temp_imagier':
+                items = request.user.item.all()
+            else:
+                favourite = Favourites.objects.get(id=imagier)
+                items = favourite.item.all()
             all_dics = self.create_dics(items_per_page, items)
 
             context = {
