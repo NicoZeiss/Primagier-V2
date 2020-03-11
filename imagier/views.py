@@ -6,7 +6,7 @@ from math import *
 from django.views.generic import View
 from django.template.loader import get_template
 from .utils import render_to_pdf
-from .forms import ExportImagierForm
+from .forms import ExportImagierForm, AddImageForm
 
 
 def index(request):
@@ -22,6 +22,7 @@ def category(request):
 		context = {
 			'cat_dic': cat_dic
 		}
+
 		return render(request, 'imagier/category.html', context)
 	else:
 		return HttpResponseRedirect(reverse('users:login'))
@@ -41,6 +42,7 @@ def subcategory(request):
 				'subcat_dic': subcat_dic,
 				'category_name': category.label
 			}
+
 			return render(request, 'imagier/subcategory.html', context)
 		else:
 			subcat_id = request.GET.get('subcat_id')
@@ -66,6 +68,7 @@ def items(request):
 			'item_dic': item_dic,
 			'subcat': subcat,
 		}
+
 		return render(request, 'imagier/items.html', context)
 	else:
 		return HttpResponseRedirect(reverse('users:login'))
@@ -76,7 +79,6 @@ def add_to_imagier(request):
 		item_id = request.GET.get('item_id')
 		_item = Item.objects.get(id=item_id)
 		request.user.item.add(_item)
-
 		return HttpResponseRedirect('/imagier/items/?subcat_id={}'.format(subcat_id))
 	else:
 		return HttpResponseRedirect(reverse('users:login'))
@@ -89,7 +91,6 @@ def del_from_imagier(request):
 			_item = Item.objects.get(id=item_id)
 			request.user.item.remove(_item)
 			return HttpResponseRedirect('/imagier/items/?subcat_id={}'.format(subcat_id))
-
 		else:
 			item_id = request.GET.get('item_id')
 			_item = Item.objects.get(id=item_id)
@@ -113,6 +114,76 @@ def export_pdf(request):
         return render(request, 'imagier/export_pdf.html', {'form': form})
     else:
         return HttpResponseRedirect(reverse('users:login'))
+
+def add_image(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = AddImageForm(request.POST)
+            if form.is_valid():
+                item_label = form.cleaned_data['item_label']
+                image_url = form.cleaned_data['image_url']
+                cat_choice = form.cleaned_data['cat_choice']
+                return HttpResponseRedirect('{}?item_label={}&image_url={}&cat_choice={}'.format(reverse('imagier:save_image'), item_label, image_url, cat_choice))
+        else:
+            form = AddImageForm()
+        return render(request, 'imagier/add_image.html', {'form': form})
+    else:
+        return HttpResponseRedirect(reverse('users:login'))
+
+def added_successfully(request):
+    if request.user.is_authenticated:
+        item_name = request.GET.get('item_added')
+
+        context = {
+            'item': item_name
+        }
+
+        return render(request, 'imagier/saved_successfully.html', context)
+
+    else:
+        return HttpResponseRedirect(reverse('users:login'))
+
+class SaveImage(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            lower_label = request.GET.get('item_label').lower()
+            image_url = request.GET.get('image_url')
+            cat_choice = request.GET.get('cat_choice')
+            cat = Category.objects.get(name=cat_choice)
+            upper_label, item_name = self.format_name(lower_label)
+
+            new_item = Item(name=item_name, picture=image_url, label=lower_label, upper_label=upper_label)
+            new_item.save()
+            new_item.category.add(cat)
+
+            inverted_cat = self.invert_cat_name(cat.name)
+            if Category.objects.filter(name=inverted_cat).exists():
+                inv_cat = Category.objects.get(name=inverted_cat)
+                new_item.category.add(inv_cat)
+
+            return HttpResponseRedirect('{}?item_added={}'.format(reverse('imagier:added_successfully'), lower_label))
+        else:
+            return HttpResponseRedirect(reverse('users:login'))
+
+    def format_name(self, item_label):
+        upper_label = item_label.upper()
+        labels = Item.objects.filter(label=item_label)
+        if labels:
+            dupl_list = []
+            for label in labels:
+                dupl_list.append(label)
+                i = len(dupl_list)
+                item_name = '{}({})'.format(item_label, i)
+        else:
+            item_name = item_label
+        return upper_label, item_name
+
+    def invert_cat_name(self, cat_name):
+        cat = cat_name.replace('_', ' ')
+        split_cat = cat.split()
+        inverted_cat = split_cat[1] + '_' + split_cat[0]
+        return inverted_cat
+
 
 class GeneratePDF(View):
     def get(self, request):
@@ -159,3 +230,4 @@ class GeneratePDF(View):
     def format_file_name(self, name):
         file_name = name.replace(' ', '_').lower()
         return file_name
+

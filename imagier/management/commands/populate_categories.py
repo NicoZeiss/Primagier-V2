@@ -14,7 +14,7 @@ class Command(BaseCommand):
                 parent_cat.save()
                 print("{} saved :".format(parent_cat.name))
                 for value in categories[key]:
-                    subcat_name = value + '_' + key
+                    subcat_name = key + '_' + value
                     if not Category.objects.filter(name=subcat_name).exists():
                         sub_cat = Category(name=subcat_name, label=value, is_parent=False, parentcat=parent_cat)
                         sub_cat.save()

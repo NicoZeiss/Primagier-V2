@@ -15,7 +15,7 @@ class Item(models.Model):
     name = models.CharField(max_length=30, unique=True, null=False)
     label = models.CharField(max_length=30, unique=False, null=False)
     upper_label = models.CharField(max_length=30, unique=False, null=False)
-    picture = models.URLField(blank=True, null=False, max_length=1000, unique=True)
+    picture = models.URLField(blank=True, null=False, max_length=1000, unique=False)
     category = models.ManyToManyField(Category, related_name='item', blank=True)
     user = models.ManyToManyField(User, related_name='item', blank=True)
 
