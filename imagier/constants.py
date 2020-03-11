@@ -1,5 +1,7 @@
+PDF_FONT_CHOICE = (('mj', 'Majuscules'), ('sc', 'Script'), ('cs', 'Cursive'),)
 
- # Init DB with some categories
+
+ # Init DB with some categories and items
 categories = {
 	'alimentation': ['fruits & légumes', 'ingrédients', 'actions'], 
 	'vêtements': ['accessoires', 'hauts', 'bas', 'chaussures'],

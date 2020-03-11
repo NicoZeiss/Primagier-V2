@@ -101,22 +101,28 @@
             <div id="header_content" class='header'>
             </div>
         <div> -->
-        {% for item in dics.dic0 %}
+        {% for item in dics %}
+        <div>
+            <p class="marg-bot"><img src="{{ item.picture }}" class="dim-img"></p>
+            {% if 'mj' in font_choice %}
+                <p class="ft-arial">{{ item.upper_label }}</p>
+            {% endif %}
+            {% if 'sc' in font_choice %}
+                <p class="ft-ecole">{{ item.label }}</p>
+            {% endif %}
+            {% if 'cs' in font_choice %}
+                <p class="separator ft-curs">{{ item.label }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+<!--         {% for item in dics.dic1 %}
         <div>
             <p class="marg-bot"><img src="{{ item.picture }}" class="dim-img"></p>
             <p class="ft-arial">{{ item.upper_label }}</p>
             <p class="ft-ecole">{{ item.label }}</p>
             <p class="separator ft-curs">{{ item.label }}</p>
         </div>
-        {% endfor %}
-        {% for item in dics.dic1 %}
-        <div>
-            <p class="marg-bot"><img src="{{ item.picture }}" class="dim-img"></p>
-            <p class="ft-arial">{{ item.upper_label }}</p>
-            <p class="ft-ecole">{{ item.label }}</p>
-            <p class="separator ft-curs">{{ item.label }}</p>
-        </div>
-        {% endfor %}
+        {% endfor %} -->
     </div>
     </body>
 </html>

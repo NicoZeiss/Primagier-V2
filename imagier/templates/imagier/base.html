@@ -11,6 +11,7 @@
   <title>Imagier Project</title>
 
   {% load static %}
+  {% load auth_extras %}
 
   <!-- Font Awesome Icons -->
   <link href="{% static 'imagier/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -49,9 +50,16 @@
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'users:favourites' %}"><i class="fas fa-star"></i></a>
           </li>
+          {% if request.user|has_group:"école" %}
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'imagier:add_image' %}"><i class="fas fa-plus"></i></a>
           </li>
+          {% endif %}
+          {% if request.user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="/site_admin"><i class="fas fa-user-shield"></i></a>
+          </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'users:logout' %}">
               <i class="fas fa-sign-out-alt"></i>

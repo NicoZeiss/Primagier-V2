@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^favourites/$', views.favourites, name='favourites'),
     url(r'^details/$', views.details, name='details'),
     url(r'^del_fav/$', views.del_favourite, name='del_fav'),
+    url(r'^create_account/$', views.create_account, name="create_account"),
 ]

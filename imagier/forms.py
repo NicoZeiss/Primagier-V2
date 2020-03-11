@@ -1,12 +1,14 @@
 from django import forms
 from .validators import verify_image_url, verify_image_not_in_db
 from .models import Category, Item
+from .constants import PDF_FONT_CHOICE
 
 
 class ExportImagierForm(forms.Form):
     required_css_class = 'img-form-list-row'
     imagier_title = forms.CharField(label='', max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Titre de l\'imagier', 'class': 'form-font'}))
     file_name = forms.CharField(label='', max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Nom du PDF', 'class': 'form-font'}))
+    font_choice = forms.MultipleChoiceField(label='', required=False, widget=forms.CheckboxSelectMultiple(attrs={'class': 'checkbox-font'}), choices=PDF_FONT_CHOICE)
 
 class AddImageForm(forms.Form):
     required_css_class = 'img-form-list-row'
