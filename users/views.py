@@ -30,12 +30,14 @@ def user_login(request):
     else:
         return HttpResponseRedirect(reverse('index'))
 
-@login_required
 def user_logout(request):
-    temp_img = request.user.item.all()
-    request.user.item.clear()
-    logout(request)
-    return HttpResponseRedirect(reverse('index'))
+    if  request.user.is_authenticated:
+        temp_img = request.user.item.all()
+        request.user.item.clear()
+        logout(request)
+        return HttpResponseRedirect(reverse('index'))
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
 @login_required
 def save_imagier(request):
@@ -50,8 +52,9 @@ def save_imagier(request):
                 for item in items:
                     fav_imagier.item.add(item)
                 request.user.item.clear()
-
-            return HttpResponseRedirect('{}?favourite_id={}'.format(reverse('users:details'), fav_imagier.id))
+                return HttpResponseRedirect('{}?favourite_id={}'.format(reverse('users:details'), fav_imagier.id))
+            else:
+                return HttpResponseRedirect(reverse('index'))
     else:
         form = SaveImagierForm()
 
