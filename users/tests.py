@@ -94,6 +94,7 @@ class LogoutUserTestCase(TestCase):
         self.user.item.add(self.item)
 
     def test_logout_user_view(self):
+        """wetest that items are deleted from temp imagier if user is going offline"""
         self.user = authenticate(username='usertest', password='testpassword')
         self.login = self.client.login(username='usertest', password='testpassword')
         response = self.client.get(reverse('users:logout'))
@@ -174,6 +175,7 @@ class CreateAccountTestCase(TestCase):
         self.assertIn(error_message, str(response.content))
 
     def test_wrong_email_raise_error(self):
+        """We test if error is raised is email is wrong"""
         self.newemail = "test@gmail"
         response = self.client.post('/users/create_account/', {
             'username': self.newuser,
@@ -185,6 +187,7 @@ class CreateAccountTestCase(TestCase):
         self.assertIn(error_message, str(response.content))
 
     def test_used_email_raise_error(self):
+        """We test if error is raised is email is already used"""
         response = self.client.post('/users/create_account/', {
             'username': self.newuser,
             'email': self.email,
@@ -195,6 +198,7 @@ class CreateAccountTestCase(TestCase):
         self.assertIn(error_message, str(response.content))
 
     def test_used_username_raise_error(self):
+        """We test if error is raised is username is already used"""
         response = self.client.post('/users/create_account/', {
             'username': self.username,
             'email': self.email,
@@ -225,6 +229,7 @@ class SaveImagierAndFavouritesViewTestCase(TestCase):
         self.user.item.add(self.item)
 
     def test_save_imagier_without_post(self):
+        """we test template render withour form completion"""
         self.client.login(username='usertest', password='testpassword')
         response = self.client.get(reverse('users:save_imagier'))
         self.assertEqual(response.status_code, 200)

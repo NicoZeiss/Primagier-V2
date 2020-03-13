@@ -199,7 +199,6 @@ class GeneratePDF(View):
                 "dics": all_dics,
                 "font_choice": font_choice,
             }
-            print(context)
 
             html = template.render(context)
             pdf = render_to_pdf(template_name, context)
