@@ -5,6 +5,7 @@ from imagier.models import Category, Item
 
 
 class Command(BaseCommand):
+    """The command will populate category into db with demo datas"""
     help = "Populate the database with categories"
 
     def handle(self, *args, **options):

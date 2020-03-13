@@ -1,8 +1,11 @@
+"""Unit tests about imagier app"""
+
+
 from django.test import TestCase
 from django.shortcuts import reverse
 from django.contrib.auth.models import User, Group
-from .models import Item, Category, Favourites
-from .forms import ExportImagierForm, AddImageForm
+from .models import Item, Category
+from .forms import ExportImagierForm
 
 
 ##########################################################################################
@@ -23,7 +26,11 @@ class CategoryViewTestCase(TestCase):
     """We test category view + template"""
     def setUp(self):
         self.cat_name = "animaux"
-        self.category = Category.objects.create(name=self.cat_name, label=self.cat_name, is_parent=True)
+        self.category = Category.objects.create(
+            name=self.cat_name,
+            label=self.cat_name,
+            is_parent=True
+        )
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
 
     def test_category_view(self):
@@ -49,7 +56,12 @@ class SubcategoryViewTestCase(TestCase):
         subcat_label = "savane"
         subcat_name = cat_name + "_" + subcat_label
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
 
     def test_subcategory_view(self):
@@ -67,7 +79,10 @@ class SubcategoryViewTestCase(TestCase):
         url = '{}?{}={}'.format(reverse('imagier:subcategory'), 'subcat_id', self.subcategory.id)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, "/imagier/subcategory/?category_id={}".format(self.category.id))
+        self.assertEqual(
+            response.url,
+            "/imagier/subcategory/?category_id={}".format(self.category.id)
+        )
 
     def test_subcategory_redirect_if_not_auth(self):
         """We test redirect is no user logged"""
@@ -85,8 +100,18 @@ class ItemsViewTestCase(TestCase):
         item_label = "la vache"
         item_url = "https://i.ytimg.com/vi/cQRnf_ycKoE/maxresdefault.jpg"
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
-        self.item = Item.objects.create(name=item_label, picture=item_url, label=item_label, upper_label=item_label.upper())
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
+        self.item = Item.objects.create(
+            name=item_label,
+            picture=item_url,
+            label=item_label,
+            upper_label=item_label.upper()
+        )
         self.item.category.add(self.subcategory)
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
 
@@ -97,10 +122,9 @@ class ItemsViewTestCase(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'imagier/items.html')
-        print(str(response.content))
         self.assertIn(">la vache<", str(response.content))
 
-    def test_items_view(self):
+    def test_items_view_added(self):
         """We test that items is displayed as 'ajouté' if user added it to temp imagier"""
         self.user.item.add(self.item)
         self.client.login(username='usertest', password='testpassword')
@@ -123,8 +147,18 @@ class ExportPDFViewTestCase(TestCase):
         item_label = "la vache"
         item_url = "https://i.ytimg.com/vi/cQRnf_ycKoE/maxresdefault.jpg"
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
-        self.item = Item.objects.create(name=item_label, picture=item_url, label=item_label, upper_label=item_label.upper())
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
+        self.item = Item.objects.create(
+            name=item_label,
+            picture=item_url,
+            label=item_label,
+            upper_label=item_label.upper()
+        )
         self.item.category.add(self.subcategory)
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
         self.user.item.add(self.item)
@@ -161,11 +195,17 @@ class ExportPDFViewTestCase(TestCase):
             'font_choice': font_choice,
         })
         self.assertEqual(response.status_code, 302)
-        url = '{}?file_name={}&imagier={}&fontchoice={}'.format(reverse('imagier:render_pdf'), file_name, None, font_choice)
+        url = '{}?file_name={}&imagier={}&fontchoice={}'.format(
+            reverse('imagier:render_pdf'),
+            file_name,
+            None,
+            font_choice
+        )
         self.assertEqual(response.url, url)
 
 
 class GeneratePDFTestCase(TestCase):
+    """We test generate PDF view"""
     def setUp(self):
         cat_name = "animaux"
         subcat_label = "savane"
@@ -173,8 +213,18 @@ class GeneratePDFTestCase(TestCase):
         item_label = "la vache"
         item_url = "https://i.ytimg.com/vi/cQRnf_ycKoE/maxresdefault.jpg"
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
-        self.item = Item.objects.create(name=item_label, picture=item_url, label=item_label, upper_label=item_label.upper())
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
+        self.item = Item.objects.create(
+            name=item_label,
+            picture=item_url,
+            label=item_label,
+            upper_label=item_label.upper()
+        )
         self.item.category.add(self.subcategory)
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
         self.user.item.add(self.item)
@@ -185,10 +235,15 @@ class GeneratePDFTestCase(TestCase):
         """We test that gen pdf return a 200 statut code and use right dic"""
         imagier = 'temp_imagier'
         self.client.login(username='usertest', password='testpassword')
-        url = '{}?imagier={}&file_name={}&fontchoice={}'.format(reverse('imagier:render_pdf'), imagier, self.file_name, self.font_choice)
+        url = '{}?imagier={}&file_name={}&fontchoice={}'.format(
+            reverse('imagier:render_pdf'),
+            imagier,
+            self.file_name,
+            self.font_choice
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.item, response.context[0]['dics'])
+        self.assertIn(self.item, response.context['dics'])
 
     def test_export_pdf_not_auth(self):
         """We test redirect is no user logged"""
@@ -211,15 +266,31 @@ class AddDeleteItemFromImagierViewTestCase(TestCase):
         item_label = "la vache"
         item_url = "https://i.ytimg.com/vi/cQRnf_ycKoE/maxresdefault.jpg"
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
-        self.item = Item.objects.create(name=item_label, picture=item_url, label=item_label, upper_label=item_label.upper())
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
+        self.item = Item.objects.create(
+            name=item_label,
+            picture=item_url,
+            label=item_label,
+            upper_label=item_label.upper()
+        )
         self.item.category.add(self.subcategory)
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
 
     def test_add_to_imagier_view(self):
         """We test redirect + item is added to user imagier"""
         self.client.login(username='usertest', password='testpassword')
-        url = '{}?{}={}&{}={}'.format(reverse('imagier:add_item'), 'subcat_id', self.subcategory.id, 'item_id', self.item.id)
+        url = '{}?{}={}&{}={}'.format(
+            reverse('imagier:add_item'),
+            'subcat_id',
+            self.subcategory.id,
+            'item_id',
+            self.item.id
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/imagier/items/?subcat_id={}".format(self.subcategory.id))
@@ -228,7 +299,13 @@ class AddDeleteItemFromImagierViewTestCase(TestCase):
     def test_delete_from_imagier_view(self):
         """We test redirect + item is removed from user imagier"""
         self.client.login(username='usertest', password='testpassword')
-        url = '{}?{}={}&{}={}'.format(reverse('imagier:del_item'), 'subcat_id', self.subcategory.id, 'item_id', self.item.id)
+        url = '{}?{}={}&{}={}'.format(
+            reverse('imagier:del_item'),
+            'subcat_id',
+            self.subcategory.id,
+            'item_id',
+            self.item.id
+        )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/imagier/items/?subcat_id={}".format(self.subcategory.id))
@@ -254,8 +331,18 @@ class AddImageToDBProcessTestCase(TestCase):
         item_label = "la vache"
         item_url = "https://i.ytimg.com/vi/cQRnf_ycKoE/maxresdefault.jpg"
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
-        self.item = Item.objects.create(name=item_label, picture=item_url, label=item_label, upper_label=item_label.upper())
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
+        self.item = Item.objects.create(
+            name=item_label,
+            picture=item_url,
+            label=item_label,
+            upper_label=item_label.upper()
+        )
         self.item.category.add(self.subcategory)
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
         self.my_group = Group.objects.create(name='école')
@@ -270,7 +357,7 @@ class AddImageToDBProcessTestCase(TestCase):
 
     def test_add_image_post_form(self):
         """We test that user is redirected so save image if form is valid"""
-        image_url = 'https://www.anigaido.com/media/zoo_animaux/201-300/268/tigre-1-thomas-pierre-xl.jpg'
+        image_url = 'https://www.anigaido.com/tigre-1-thomas-pierre-xl.jpg'
         cat_choice = self.subcategory
         self.client.login(username='usertest', password='testpassword')
         response = self.client.post(reverse('imagier:add_image'), {
@@ -278,7 +365,11 @@ class AddImageToDBProcessTestCase(TestCase):
             'image_url': image_url,
             'cat_choice': cat_choice.id,
         })
-        url = '{}?item_label={}&image_url={}&cat_choice={}'.format(reverse('imagier:save_image'), 'le%20tigre', image_url, cat_choice)
+        url = '{}?item_label={}&image_url={}&cat_choice={}'.format(
+            reverse('imagier:save_image'),
+            'le%20tigre',
+            image_url, cat_choice
+        )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, url)
 
@@ -297,9 +388,14 @@ class AddImageToDBProcessTestCase(TestCase):
 
     def test_save_image_view(self):
         """We test that save image view redirect user and saved image into db"""
-        image_url = 'https://www.anigaido.com/media/zoo_animaux/201-300/268/tigre-1-thomas-pierre-xl.jpg'
+        image_url = 'https://www.anigaido.com/tigre-1-thomas-pierre-xl.jpg'
         cat_choice = self.subcategory
-        url = '{}?item_label={}&image_url={}&cat_choice={}'.format(reverse('imagier:save_image'), 'le%20tigre', image_url, cat_choice)
+        url = '{}?item_label={}&image_url={}&cat_choice={}'.format(
+            reverse('imagier:save_image'),
+            'le%20tigre',
+            image_url,
+            cat_choice
+        )
         self.client.login(username='usertest', password='testpassword')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
@@ -312,12 +408,23 @@ class AddImageToDBProcessTestCase(TestCase):
 
     def test_save_image_same_label(self):
         """We test that duplicate label increment item name + items is added into inverted cat"""
-        image_url = 'https://www.anigaido.com/media/zoo_animaux/201-300/268/tigre-1-thomas-pierre-xl.jpg'
-        inv_cat = Category.objects.create(name='savane_animaux', label="animaux", is_parent="False", parentcat=self.category)
+        image_url = 'https://www.anigaido.com/tigre-1-thomas-pierre-xl.jpg'
+        inv_cat = Category.objects.create(
+            name='savane_animaux',
+            label="animaux",
+            is_parent="False",
+            parentcat=self.category
+        )
         cat_choice = self.subcategory
-        url = '{}?item_label={}&image_url={}&cat_choice={}'.format(reverse('imagier:save_image'), 'la%20vache', image_url, cat_choice)
+        url = '{}?item_label={}&image_url={}&cat_choice={}'.format(
+            reverse('imagier:save_image'),
+            'la%20vache',
+            image_url,
+            cat_choice
+        )
         self.client.login(username='usertest', password='testpassword')
         response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(Item.objects.get(name='la vache(1)'), Item.objects.all())
         self.assertIn(Item.objects.get(name='la vache(1)'), inv_cat.item.all())
         self.assertIn(Item.objects.get(name='la vache(1)'), self.subcategory.item.all())
@@ -326,4 +433,3 @@ class AddImageToDBProcessTestCase(TestCase):
         """We test redirect is no user logged"""
         response = self.client.get(reverse('imagier:save_image'))
         self.assertEqual(response.status_code, 302)
-

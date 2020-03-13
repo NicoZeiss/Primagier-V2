@@ -1,3 +1,6 @@
+"""Here are validators used to validate users app forms"""
+
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 

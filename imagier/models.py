@@ -1,8 +1,12 @@
+"""Here are the 3 models we use into the app"""
+
+
 from django.db import models
 from django.contrib.auth.models import User
 
 
 class Category(models.Model):
+    """Category model will contain items with many to many rs"""
     name = models.CharField(max_length=30, unique=True, null=False)
     label = models.CharField(max_length=30, unique=False, null=False)
     is_parent = models.BooleanField(default=False, null=False)
@@ -12,6 +16,7 @@ class Category(models.Model):
         return self.name
 
 class Item(models.Model):
+    """All the items we want to display on pdf"""
     name = models.CharField(max_length=30, unique=True, null=False)
     label = models.CharField(max_length=30, unique=False, null=False)
     upper_label = models.CharField(max_length=30, unique=False, null=False)
@@ -23,6 +28,7 @@ class Item(models.Model):
         return self.name
 
 class Favourites(models.Model):
+    """Table to save as favourites imagiers"""
     name = models.CharField(max_length=30, unique=False, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ManyToManyField(Item, related_name='favourites')

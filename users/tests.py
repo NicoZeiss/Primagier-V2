@@ -1,9 +1,13 @@
+"""Here are all the unit tests councerning users app"""
+
+
 from django.shortcuts import reverse
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .forms import LoginForm, SaveImagierForm, CreateAccountForm
 from imagier.models import Item, Category, Favourites
+from .forms import LoginForm, CreateAccountForm
+
 
 
 ##########################################################################################
@@ -53,8 +57,8 @@ class LoginTestCase(TestCase):
             'password': self.password
         })
         self.user = authenticate(username=self.username, password=self.password)
-        self.login = self.client.login(username=self.username, password=self.password)
-        self.assertEqual(self.login, False)
+        login = self.client.login(username=self.username, password=self.password)
+        self.assertEqual(login, False)
         self.assertIn("Identifiant ou mot de passe incorrect", str(response.content))
 
     def test_username_error(self):
@@ -65,14 +69,14 @@ class LoginTestCase(TestCase):
             'password': self.password
         })
         self.user = authenticate(username=self.username, password=self.password)
-        self.login = self.client.login(username=self.username, password=self.password)
-        self.assertEqual(self.login, False)
+        login = self.client.login(username=self.username, password=self.password)
+        self.assertEqual(login, False)
         self.assertIn("Identifiant ou mot de passe incorrect", str(response.content))
 
     def test_login_redirect_index_if_auth(self):
         """Check 302 returns and url"""
         self.user = authenticate(username=self.username, password=self.password)
-        self.login = self.client.login(username=self.username, password=self.password)
+        self.client.login(username=self.username, password=self.password)
         response = self.client.get(reverse('users:login'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/")
@@ -87,8 +91,18 @@ class LogoutUserTestCase(TestCase):
         item_label = "la vache"
         item_url = "https://i.ytimg.com/vi/cQRnf_ycKoE/maxresdefault.jpg"
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
-        self.item = Item.objects.create(name=item_label, picture=item_url, label=item_label, upper_label=item_label.upper())
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
+        self.item = Item.objects.create(
+            name=item_label,
+            picture=item_url,
+            label=item_label,
+            upper_label=item_label.upper()
+        )
         self.item.category.add(self.subcategory)
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
         self.user.item.add(self.item)
@@ -96,14 +110,14 @@ class LogoutUserTestCase(TestCase):
     def test_logout_user_view(self):
         """wetest that items are deleted from temp imagier if user is going offline"""
         self.user = authenticate(username='usertest', password='testpassword')
-        self.login = self.client.login(username='usertest', password='testpassword')
-        response = self.client.get(reverse('users:logout'))
+        self.client.login(username='usertest', password='testpassword')
+        self.client.get(reverse('users:logout'))
         self.assertNotIn(self.item, self.user.item.all())
 
     def test_redirect_index_when_logout(self):
         """Check 302 returns and url"""
         self.user = authenticate(username='usertest', password='testpassword')
-        self.login = self.client.login(username='usertest', password='testpassword')
+        self.client.login(username='usertest', password='testpassword')
         response = self.client.get(reverse('users:logout'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/")
@@ -138,7 +152,7 @@ class CreateAccountTestCase(TestCase):
     def test_redirect_index_if_authenticated(self):
         """We test that user is redirected to index if he's already authenticated"""
         self.user = authenticate(username=self.username, password=self.password)
-        self.login = self.client.login(username=self.username, password=self.password)
+        self.client.login(username=self.username, password=self.password)
         response = self.client.get(reverse('users:create_account'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/")
@@ -222,8 +236,18 @@ class SaveImagierAndFavouritesViewTestCase(TestCase):
         item_label = "la vache"
         item_url = "https://i.ytimg.com/vi/cQRnf_ycKoE/maxresdefault.jpg"
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
-        self.item = Item.objects.create(name=item_label, picture=item_url, label=item_label, upper_label=item_label.upper())
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
+        self.item = Item.objects.create(
+            name=item_label,
+            picture=item_url,
+            label=item_label,
+            upper_label=item_label.upper()
+        )
         self.item.category.add(self.subcategory)
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
         self.user.item.add(self.item)
@@ -244,7 +268,9 @@ class SaveImagierAndFavouritesViewTestCase(TestCase):
         favourite = Favourites.objects.get(user_id=self.user.id)
         self.assertEqual(response.status_code, 302)
         self.assertIn(self.imagier_title, favourite.name)
-        self.assertEqual(response.url, '{}?favourite_id={}'.format(reverse('users:details'), favourite.id))
+        self.assertEqual(response.url, '{}?favourite_id={}'.format(
+            reverse('users:details'),
+            favourite.id))
 
     def test_saveimg_redirect_if_not_auth(self):
         """We test redirect is no user logged"""
@@ -254,7 +280,7 @@ class SaveImagierAndFavouritesViewTestCase(TestCase):
     def test_favourites_view(self):
         """We test favourites template"""
         favourite = Favourites.objects.create(name=self.imagier_title, user_id=self.user.id)
-        add_item = favourite.item.add(self.item)
+        favourite.item.add(self.item)
         self.client.login(username='usertest', password='testpassword')
         response = self.client.get(reverse('users:favourites'))
         self.assertEqual(response.status_code, 200)
@@ -270,7 +296,7 @@ class SaveImagierAndFavouritesViewTestCase(TestCase):
     def test_delete_favourites_view(self):
         """We test del fav view redirect and fav is deleted from db"""
         favourite = Favourites.objects.create(name=self.imagier_title, user_id=self.user.id)
-        add_item = favourite.item.add(self.item)
+        favourite.item.add(self.item)
         self.client.login(username='usertest', password='testpassword')
         url = '{}?{}={}'.format(reverse('users:del_fav'), 'favourite', favourite.id)
         response = self.client.get(url)
@@ -294,12 +320,22 @@ class DetailsViewTestCase(TestCase):
         item_label = "la vache"
         item_url = "https://i.ytimg.com/vi/cQRnf_ycKoE/maxresdefault.jpg"
         self.category = Category.objects.create(name=cat_name, label=cat_name, is_parent=True)
-        self.subcategory = Category.objects.create(name=subcat_name, label=subcat_label, is_parent=False, parentcat=self.category)
-        self.item = Item.objects.create(name=item_label, picture=item_url, label=item_label, upper_label=item_label.upper())
+        self.subcategory = Category.objects.create(
+            name=subcat_name,
+            label=subcat_label,
+            is_parent=False,
+            parentcat=self.category
+        )
+        self.item = Item.objects.create(
+            name=item_label,
+            picture=item_url,
+            label=item_label,
+            upper_label=item_label.upper()
+        )
         self.item.category.add(self.subcategory)
         self.user = User.objects.create_user('usertest', 'user@test.com', 'testpassword')
         self.favourite = Favourites.objects.create(name=imagier_title, user_id=self.user.id)
-        add_item = self.favourite.item.add(self.item)
+        self.favourite.item.add(self.item)
 
     def test_details_view(self):
         """We test details template and items in fav"""
