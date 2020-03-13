@@ -1,0 +1,7 @@
+env/
+imagier/__pycache__
+users/__pycache__
+imagier/migrations/__pycache__
+users/migrations/__pycache__
+imagier/management/commands/__pycache__
+.coverage
