@@ -1,0 +1,1 @@
+web: gunicorn imagier_project.wsgi
