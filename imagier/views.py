@@ -1,5 +1,7 @@
 """Here are alls the views from imagier app"""
 
+import os
+from imagier_project.settings import BASE_DIR
 from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -13,8 +15,12 @@ def is_school_member(user):
     return user.groups.filter(name='école').exists()
 
 def index(request):
-    """render index template"""
+    """Render index template"""
     return render(request, 'imagier/index.html')
+
+def legal_notices(request):
+    """Render legal notices template"""
+    return render(request, 'imagier/legal_notices.html')
 
 def category(request):
     """Display all parent cat"""
@@ -196,10 +202,12 @@ def generate_pdf(request):
             favourite = Favourites.objects.get(id=imagier)
             item_list = favourite.item.all()
         # all_dics = self.create_dics(items_per_page, items)
+        fonts_url = file_path = os.path.join(BASE_DIR, 'imagier/static/imagier/fonts/')
 
         context = {
             "dics": item_list,
             "font_choice": font_choice,
+            "fonts_url": fonts_url,
         }
 
         # PDF rendering

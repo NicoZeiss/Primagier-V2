@@ -34,7 +34,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="{% url 'index' %}">Ecole maternelle Lauchacker</a>
+      <a class="navbar-brand js-scroll-trigger" href="{% url 'index' %}">PRIMAGIER</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -146,7 +146,10 @@
    <!-- Footer -->
   <footer class="bg-light py-5">
     <div class="container">
-      <div class="small text-center text-muted">Copyright &copy; 2019 - Start Bootstrap</div>
+      <div class="row">
+        <div class="col-lg-6 small text-center"><a class="footer-text" href="{% url 'imagier:legal_notices' %}">Mentions légales</a></div>
+        <div class="col-lg-6 small text-center"><a class="footer-text" href="mailto:?to=Anais.Zeisser@ac-strasbourg.fr">Contact</a></div>
+      </div>
     </div>
   </footer>
 

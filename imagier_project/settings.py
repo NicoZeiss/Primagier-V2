@@ -27,10 +27,10 @@ SECRET_KEY = 'pr@+zdh2##*=b#e5ya&@6zbhrfmi&d@3bl)wn@=wfbxpr!66s='
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get('ENV') == 'PRODUCTION':
     DEBUG = False
+    ALLOWED_HOSTS = ['primagier.herokuapp.com', '.researchthroughdesign.org']
 else:
     DEBUG = True
-
-ALLOWED_HOSTS = ['NOMDOMAINE.herokuapp.com']
+    ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
