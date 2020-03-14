@@ -9672,7 +9672,7 @@ header.masthead h1 {
 @media (min-width: 992px) {
   header.masthead {
     min-height: 100vh;
-    padding-top: 300px;
+    padding-top: 270px;
     padding-bottom: 30px;
   }
   header.masthead p {
