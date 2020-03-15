@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Category, Item, Favourites
-from .utils import render_to_pdf, format_name, invert_cat_name, format_file_name
+from .utils import render_to_pdf, format_name, invert_cat_name, format_file_name, format_url
 from .forms import ExportImagierForm, AddImageForm
 
 
@@ -210,8 +210,10 @@ def generate_pdf(request):
         # all_dics = self.create_dics(items_per_page, items)
         fonts_url = file_path = os.path.join(BASE_DIR, 'imagier/static/imagier/fonts/')
 
+        formated_items = format_url(item_list)
+
         context = {
-            "dics": item_list,
+            "dics": formated_items,
             "font_choice": font_choice,
             "fonts_url": fonts_url,
         }

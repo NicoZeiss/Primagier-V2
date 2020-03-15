@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from .models import Item
+from urllib import parse
 
 
 def render_to_pdf(template_src, context_dict):
@@ -13,10 +14,21 @@ def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
     html = template.render(context_dict)
     result = BytesIO()
-    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    pdf = pisa.pisaDocument(BytesIO(html.encode('utf-8')), result, encoding='utf-8')
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
+
+def format_url(items):
+    """Format url to avoid ascii issue"""
+    item_list = {}
+    for item in items:
+        url = item.picture
+        scheme, netloc, path, params, query, fragment = parse.urlparse(url)
+        new_path = parse.quote(path)
+        new_url = parse.urlunparse((scheme, netloc, new_path, params, query, fragment))
+        item_list[item.label] = new_url
+    return item_list
 
 def format_name(item_label):
     """Format the name if same label already exists into DB"""

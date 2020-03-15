@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <title>Title</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         {% load static %}
         <style type="text/css">
             @page {
@@ -101,17 +102,17 @@
             <div id="header_content" class='header'>
             </div>
         <div> -->
-        {% for item in dics %}
+        {% for key, value in dics.items %}
         <div>
-            <p class="marg-bot"><img src="{{ item.picture }}" class="dim-img"></p>
+            <p class="marg-bot"><img src="{{ value }}" class="dim-img"></p>
             {% if 'mj' in font_choice %}
-                <p class="ft-arial">{{ item.upper_label }}</p>
+                <p class="ft-arial">{{ key }}</p>
             {% endif %}
             {% if 'sc' in font_choice %}
-                <p class="ft-ecole">{{ item.label }}</p>
+                <p class="ft-ecole">{{ key }}</p>
             {% endif %}
             {% if 'cs' in font_choice %}
-                <p class="separator ft-curs">{{ item.label }}</p>
+                <p class="separator ft-curs">{{ key }}</p>
             {% endif %}
         </div>
         {% endfor %}
