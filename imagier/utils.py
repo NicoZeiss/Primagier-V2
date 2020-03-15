@@ -27,7 +27,7 @@ def format_url(items):
         scheme, netloc, path, params, query, fragment = parse.urlparse(url)
         new_path = parse.quote(path)
         new_url = parse.urlunparse((scheme, netloc, new_path, params, query, fragment))
-        item_list[item.label] = new_url
+        item_list[item.label] = [new_url, item.upper_label]
     return item_list
 
 def format_name(item_label):

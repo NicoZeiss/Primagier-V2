@@ -104,9 +104,9 @@
         <div> -->
         {% for key, value in dics.items %}
         <div>
-            <p class="marg-bot"><img src="{{ value }}" class="dim-img"></p>
+            <p class="marg-bot"><img src="{{ value.0 }}" class="dim-img"></p>
             {% if 'mj' in font_choice %}
-                <p class="ft-arial">{{ key }}</p>
+                <p class="ft-arial">{{ value.1 }}</p>
             {% endif %}
             {% if 'sc' in font_choice %}
                 <p class="ft-ecole">{{ key }}</p>
