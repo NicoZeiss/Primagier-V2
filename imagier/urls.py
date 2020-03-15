@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^save_image/$', views.save_image, name="save_image"),
     url(r'^added_successfully/$', views.added_successfully, name="added_successfully"),
     url(r'^legal_notices/$', views.legal_notices, name="legal_notices"),
+    url(r'^del_tempimg/$', views.del_tempimg, name="del_tempimg"),
 
 ]

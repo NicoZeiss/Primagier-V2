@@ -106,6 +106,12 @@ def del_from_imagier(request):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @login_required
+def del_tempimg(request):
+    request.user.item.clear()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required
 def export_pdf(request):
     """Display template to chose pdf name + fonts to use"""
     imagier = request.GET.get('imagier')
