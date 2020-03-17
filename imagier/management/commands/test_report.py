@@ -10,5 +10,5 @@ class Command(BaseCommand):
 	
     def handle(self, *args, **options):
         """Here is the command"""
-        # os.system("coverage run --omit */env/* manage.py test")	
-        # os.system("coverage report")
+        os.system("coverage run --omit */env/* manage.py test")	
+        os.system("coverage report")
