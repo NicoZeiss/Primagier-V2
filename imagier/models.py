@@ -27,6 +27,10 @@ class Item(models.Model):
     def __str__(self):
         return self.name
 
+    def admin_names(self):
+        return ', '.join([a.admin_name for a in self.user.all()])
+    admin_names.short_description = "Admin names"
+
 class Favourites(models.Model):
     """Table to save as favourites imagiers"""
     name = models.CharField(max_length=30, unique=False, null=False)

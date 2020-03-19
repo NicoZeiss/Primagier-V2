@@ -203,7 +203,7 @@ def generate_pdf(request):
         template_name = "imagier/invoice{}.html".format(items_per_page)
         # check if export is from temp imagier or favourites
         if imagier == 'temp_imagier':
-            item_list = request.user.item.all()
+            item_list = request.user.item.all().order_by('imagier_item_user.id')
         else:
             favourite = Favourites.objects.get(id=imagier)
             item_list = favourite.item.all()
