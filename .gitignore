@@ -5,3 +5,4 @@ imagier/migrations/__pycache__
 users/migrations/__pycache__
 imagier/management/commands/__pycache__
 .coverage
+imagier_project/__pycache__

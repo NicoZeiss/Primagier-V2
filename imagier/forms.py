@@ -36,7 +36,7 @@ class AddImageForm(forms.Form):
 
     item_label = forms.CharField(
         label='',
-        max_length=50,
+        max_length=55,
         widget=forms.TextInput(attrs={'placeholder': 'Nom de l\'image', 'class': 'form-font'})
     )
 
