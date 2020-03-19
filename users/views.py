@@ -46,7 +46,7 @@ def save_imagier(request):
         form = SaveImagierForm(request.POST)
         if form.is_valid():
             imagier_title = form.cleaned_data['imagier_title']
-            items = request.user.item.all()
+            items = request.user.item.all().order_by('imagier_item_user.id')
             if items:
                 fav_imagier = Favourites(name=imagier_title, user_id=request.user.id)
                 fav_imagier.save()
