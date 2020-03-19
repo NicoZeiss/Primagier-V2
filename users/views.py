@@ -79,7 +79,7 @@ def details(request):
     """Display items councerning chosen favourite imagier"""
     favourite_id = request.GET.get('favourite_id')
     favourite = Favourites.objects.get(id=favourite_id)
-    items = favourite.item.all()
+    items = favourite.item.all().order_by('imagier_favourites_item.id')
     context = {
         'items': items,
         'favourite': favourite,

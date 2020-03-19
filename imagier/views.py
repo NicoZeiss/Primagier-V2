@@ -206,7 +206,7 @@ def generate_pdf(request):
             item_list = request.user.item.all().order_by('imagier_item_user.id')
         else:
             favourite = Favourites.objects.get(id=imagier)
-            item_list = favourite.item.all()
+            item_list = favourite.item.all().order_by('imagier_favourites_item.id')
         # all_dics = self.create_dics(items_per_page, items)
         fonts_url = file_path = os.path.join(BASE_DIR, 'imagier/static/imagier/fonts/')
 
